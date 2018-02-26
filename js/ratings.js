@@ -94,7 +94,7 @@ d3.csv(dataUrl, function(error, data) {
 	   	.attr("y",y(0))
 	   	.attr("fill", function(d) {return color(d.length)})
 
-	   	.on('mouseover', function(d) {
+	   	.on('mouseenter', function(d) {
 		tooltip.transition()
 			.duration(50)
 			.style('opacity',0.9);

@@ -9,7 +9,7 @@ body {
 }
 #chart {
   width: 100%;
-  max-width: 600px;
+  max-width: 900px;
   height: 400px;
   position: absolute;
 }
