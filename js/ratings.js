@@ -99,7 +99,7 @@ d3.csv(dataUrl, function(error, data) {
 			.duration(50)
 			.style('opacity',0.9);
 
-		tooltip.html("<strong>MetaCritic:</strong> " + d.length + ", " + (d.x0) + "-" + (d.x1))
+		tooltip.html("<strong>Metacritic:</strong> " + d.length + ", " + (d.x0) + "-" + (d.x1))
 			.attr('class','tooltip tooltip_mc')
 			.style('left', (d3.event.pageX)+'px')
 			.style('top', (d3.event.pageY)+'px')
@@ -217,7 +217,7 @@ d3.csv(dataUrl, function(error, data) {
 
     var tableHeader = summaryTable.append("thead");
     tableHeader.selectAll("th")
-    	.data(["","MetaCritic Rating","User Rating"])
+    	.data(["","Metacritic Rating","User Rating"])
     	.enter()
     	.append("th")
     	.text(function(d) { return d});
