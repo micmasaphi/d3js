@@ -6,11 +6,20 @@
 </head>
 <body>
 	<div class="container">
-		<h2></h2>
+		<h2>MetaCritic: Preliminary Analysis</h2>
 		<section id="chart"></section>
 	</div>
 	<div id ="summary_table"></div>
 	<script src="https://d3js.org/d3.v4.min.js"></script>
 	<script src="js/ratings.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script>
+		jQuery(document).ready(function(){
+			var chartBottom = jQuery("#chart").offset();
+			// we know that the chart is hardcoded to 400px, so it's safe here!
+			// rather do that than measure the heading height...
+			jQuery("#summary_table").offset({top: chartBottom.top + 400})
+		})
+	</script>
 </body>
 </html>

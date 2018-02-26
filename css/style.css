@@ -14,8 +14,6 @@ body {
   position: absolute;
 }
 #summary_table {
-	position: absolute;
-	top: 430px;
 	text-align: right;
 }
 

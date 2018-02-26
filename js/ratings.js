@@ -22,22 +22,25 @@ var g = myChart.append("g").attr("transform", "translate(" + margin.left + "," +
 d3.csv(dataUrl, function(error, data) {
 		if(error) throw error;
 
-		/*
-			could also go with d.mc_rating = +d.mc_rating
-			(http://learnjsdata.com/read_data.html)
-			but that might not filter NaN; need to consider 
-			two-column case for usr_rating
-        */
+		// rows aren't fully populated; get individual column counts
+        var counts = new Map();
+        counts.set('mc_rating',0);
+        counts.set('usr_rating',0);
 
-        // converting data into base-10 integers
-		data = data.filter(function(d) {
+  		data = data.filter(function(d) {
         	if(isNaN(d.mc_rating) || d.mc_rating==='') {
             	return false;
+        	} else {
+        		let ct = counts.get('mc_rating');
+	        	counts.set('mc_rating', ct+1);
         	}
         	if(isNaN(d.usr_rating) || d.usr_rating==='') {
         		return false;
-        	} 
-	        d.mc_rating = parseInt(d.mc_rating, 10);
+        	} else {
+        		let ct = counts.get('usr_rating');
+	        	counts.set('usr_rating', ct+1); 
+        	}
+	        d.mc_rating = parseInt(d.mc_rating, 10); 
 	        d.usr_rating = parseInt(d.usr_rating*10, 10);
 	        return true;
     	});
@@ -186,7 +189,7 @@ d3.csv(dataUrl, function(error, data) {
       .attr("x",0 - (height+margin.top+margin.bottom) / 2)
       .attr("class","axis_text axis--y")
       .style("text-anchor", "middle")
-      .text("Count");  
+      .text("Review Count");  
 
     // x-axis title
     myChart.append("text")             
@@ -202,26 +205,14 @@ d3.csv(dataUrl, function(error, data) {
     const mcMed = d3.median(data, function(d) { return d.mc_rating});
     const usrAvg = d3.mean(data, function(d) { return d.usr_rating});
     const usrMed = d3.median(data, function(d) { return d.usr_rating});
-    const mcSd = Math.sqrt(d3.variance(data, function(d) { return d.mc_rating}));
-    const usrSd = Math.sqrt(d3.variance(data, function(d) { return d.usr_rating}));
-
+    const mcSd = d3.deviation(data, function(d) { return d.mc_rating});
+    const usrSd = d3.deviation(data, function(d) { return d.usr_rating});
 
     var summaryStatistics = [
-    	[
-    		"Mean",
-    		mcAvg.toFixed(1),
-    		usrAvg.toFixed(1)
-    	],
-    	[
-    		"Median",
-    		mcMed,
-    		usrMed
-    	],
-    	[
-    		"StDev",
-    		mcSd.toFixed(1),
-    		usrSd.toFixed(1)
-    	]
+    	["Count",counts.get('mc_rating'),counts.get('usr_rating')],
+    	["Mean", mcAvg.toFixed(1), usrAvg.toFixed(1)],
+    	["Median", mcMed, usrMed],
+    	["StDev", mcSd.toFixed(1), usrSd.toFixed(1)],
     ]
 
     var tableHeader = summaryTable.append("thead");
@@ -241,12 +232,6 @@ d3.csv(dataUrl, function(error, data) {
    			.enter()
    			.append("td")
    			.text(function(d) { return d});
-
-
-
-    
-
-
 });
 
 
